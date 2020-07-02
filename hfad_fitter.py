@@ -31,7 +31,14 @@ def cmdargs():
 
 
 # columns to be read
-read_cols = ["ext", "ucal_mag", "mean_mag", "eimag", "std_mag", "n_phot", "x", "y"]
+read_cols = ["ext",         # detector number
+             "ucal_mag",    # calibrated mag
+             "mean_mag",    # mean mag of all observations
+             "eimag",       # instrumental mag error
+             "std_mag",     # standard deviation on mags from all observations
+             "n_phot",      # number of observations
+             "x", "y",      # x and y detector coordinates
+             ]
 # check which files from the possible combinations exist and then read them
 def read_data(infile):
     with h5py.File(infile, "r") as f:
@@ -186,7 +193,8 @@ def run(infile, outfile,
 
 
         if figs:
-            plt.subplot(4,4,chip)
+            _sp_size = int(np.ceil(np.sqrt(chips.size)))
+            plt.subplot(_sp_size,_sp_size,chip)
             plt.plot(ndegs[:len(rt_mn_sq_sig)], rt_mn_sq_sig)
             plt.xlim(0,30)
             plt.xlabel("Polynomial degrees")
@@ -210,10 +218,10 @@ def run(infile, outfile,
         fig = plt.figure(figsize=(11,8))
 
     # somewhere to store solutions and other parameters and arrays
-    coeffs = [None]*16
-    cal_errs = [None]*16
-    err_scales = [None]*16
-    ref_counts = [None]*16
+    coeffs = [None]*chips.size
+    cal_errs = [None]*chips.size
+    err_scales = [None]*chips.size
+    ref_counts = [None]*chips.size
     Δmag_pred = Δmag*np.nan
 
     for chip in chips:
@@ -261,7 +269,8 @@ def run(infile, outfile,
             print(" {:3d} | {:4d} | {:4d} | {:7.5f} | {:8.6f} ".format(chip, best_ndegs[chip-1], bins.size-1, *res.x))
 
         if figs:
-            plt.subplot(4,4,chip)
+            _sp_size = int(np.ceil(np.sqrt(chips.size)))
+            plt.subplot(_sp_size,_sp_size,chip)
             plt.scatter(data["ucal_mag"][_s], data["eimag"][_s], s=3, alpha=0.5)
             plt.scatter(data["ucal_mag"][_s], np.hypot(res.x[1]*data["eimag"][_s], res.x[0]), s=3, alpha=0.5)
             plt.xlabel("mag")
@@ -278,14 +287,15 @@ def run(infile, outfile,
         bins = np.arange(0., 2110., step)
 
         fig = plt.figure(figsize=(11,8))
-        lims = [None]*16
+        lims = [None]*chips.size
         for chip in chips:
             _d = data[slices[chip-1]]
             _Δmag = Δmag[slices[chip-1]]
 
             st,_,_,_ = bs2d(_d["x"], _d["y"], _Δmag, statistic='median', bins=[bins]*2)
 
-            plt.subplot(4,4,chip)
+            _sp_size = int(np.ceil(np.sqrt(chips.size)))
+            plt.subplot(_sp_size,_sp_size,chip)
             vl,vu = np.nanpercentile(st, [1,99])
             vmax = np.max([-vl, vu])
             lims[chip-1] = (-vmax,vmax)
@@ -305,7 +315,8 @@ def run(infile, outfile,
 
             st,_,_,_ = bs2d(_d["x"], _d["y"], _Δmag, statistic='median', bins=[bins]*2)
 
-            plt.subplot(4,4,chip)
+            _sp_size = int(np.ceil(np.sqrt(chips.size)))
+            plt.subplot(_sp_size,_sp_size,chip)
             vl,vu = lims[chip-1]
             plt.imshow(st.T, cmap='jet', vmin=vl, vmax=vu)
             plt.colorbar()
@@ -323,7 +334,8 @@ def run(infile, outfile,
 
             st,_,_,_ = bs2d(_d["x"], _d["y"], _Δmag, statistic='median', bins=[bins]*2)
 
-            plt.subplot(4,4,chip)
+            _sp_size = int(np.ceil(np.sqrt(chips.size)))
+            plt.subplot(_sp_size,_sp_size,chip)
             vl,vu = lims[chip-1]
             plt.imshow(st.T, cmap='jet', vmin=vl, vmax=vu)
             plt.colorbar()
