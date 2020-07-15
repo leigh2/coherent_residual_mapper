@@ -11,7 +11,7 @@ from scipy.optimize import minimize
 # command line setup and reading
 def cmdargs():
     parser = argparse.ArgumentParser(
-        description="Solve for high frequency atmospheric distortion (hfad)")
+        description="Solve for spatially coherent residuals global calibration.")
     parser.add_argument("ref_file_path", type=str,
         help="Path to hdf5 archive of reference sources")
     parser.add_argument("out_file_path", type=str,
@@ -304,7 +304,7 @@ def run(infile, outfile,
             plt.gca().get_xaxis().set_visible(False)
             plt.gca().get_yaxis().set_visible(False)
 
-        fig.suptitle('raw')
+        fig.suptitle('Original', x=0.5, y=1.0)
         plt.tight_layout()
 
 
@@ -323,7 +323,7 @@ def run(infile, outfile,
             plt.gca().get_xaxis().set_visible(False)
             plt.gca().get_yaxis().set_visible(False)
 
-        fig.suptitle('fitted')
+        fig.suptitle('Model', x=0.5, y=1.0)
         plt.tight_layout()
 
 
@@ -342,7 +342,7 @@ def run(infile, outfile,
             plt.gca().get_xaxis().set_visible(False)
             plt.gca().get_yaxis().set_visible(False)
 
-        fig.suptitle('residual')
+        fig.suptitle('Residuals', x=0.5, y=1.0)
         plt.tight_layout()
 
 
