@@ -38,7 +38,7 @@ v20120320_00503_st_refs.hdf5 is an HDF5 archive containing instantaneous and ave
 
 ![Original residual map](/figs/original.png)
 
-Clearly there is a lot of coherent spatial structure present in this image. We can reduce the scatter in the observations of individual stars if we can remove this structure.
+Clearly there is a lot of spatially coherent structure present in this image. We can reduce the scatter in the observations of individual stars if we can remove this structure.
 
 ### The solution
 
