@@ -2,8 +2,8 @@
 Solve for residuals to a photometric calibration. For example those caused by
 high frequency atmospheric distortion.
 
-Authors:
-Leigh C. Smith
+## Authors:
+Leigh C. Smith,
 Sergey E. Koposov
 
 ```
@@ -25,3 +25,13 @@ optional arguments:
   -v, --verbose         Verbose output
   --overwrite           Overwrite output file if exists
 ```
+
+## Example usage
+
+```
+python hfad_fitter.py v20120320_00503_st_refs.hdf5 test.hdf5 -fv --overwrite
+```
+
+v20120320_00503_st_refs.hdf5 is an HDF5 archive containing instantaneous and average magnitudes (m and <m> respectively hereafter) of a number of well measured reference stars for the VIRCAM observation v20120320_00503_st. A map of median m-<m> inside spatial bins of each of the 16 VIRCAM detectors is shown below.
+![Original residual map](/figs/original.png)
+test  
