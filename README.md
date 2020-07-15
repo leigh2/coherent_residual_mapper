@@ -72,7 +72,7 @@ And in figure form:
 
 ![Err vs. ndeg](/figs/error_vs_ndeg.png)
 
-Once the ideal number of Chebyshev polynomial degrees is identified (i.e. high enough to capture as much structure as possible but without overfitting the data or being too expensive to compute) it is refit to the all the data. The fitted model is shown in the below figure.
+Once the ideal number of Chebyshev polynomial degrees is identified (i.e. high enough to capture as much structure as possible but without overfitting the data or being too expensive to compute) it is refit to all the data. The fitted model is shown in the below figure.
 
 ![Model](/figs/model.png)
 
@@ -83,3 +83,26 @@ Once this model is subtracted from the data we obtain the new residual maps show
 An additional step is taken to calibrate the raw magnitude errors by fitting for a raw magnitude error scaling factor and a calibration error added in quadrature such that the distribution of the new residuals over their calibrated errors is approximately unit Gaussian in a series of magnitude bins. In the figure below the raw magnitude errors are the blue points, the calibrated magnitude errors are in orange. Generally this calibration results in an increase to the final magnitude error since the raw errors tend to be underestimated.
 
 ![Original vs. calibrated errors](/figs/old_new_errs.png)
+
+Verbose output for the error calibration
+
+```
+chip | ndeg | bins | cal_err | err_scale
+-----|------|------|---------|----------
+   1 |   10 |   11 | 0.02633 | 1.127961
+   2 |   10 |   10 | 0.02878 | 1.206450
+   3 |   10 |   10 | 0.02610 | 1.119989
+   4 |   10 |    7 | 0.01951 | 1.019898
+   5 |   13 |   12 | 0.02511 | 1.171598
+   6 |   13 |    9 | 0.02425 | 1.060683
+   7 |   10 |    8 | 0.02288 | 1.055600
+   8 |   10 |   13 | 0.01942 | 1.038915
+   9 |   13 |    9 | 0.02203 | 1.060033
+  10 |   13 |   14 | 0.02306 | 1.131490
+  11 |   17 |   12 | 0.02401 | 1.084157
+  12 |   10 |    9 | 0.02221 | 1.044167
+  13 |   10 |   10 | 0.02238 | 1.072370
+  14 |   10 |   11 | 0.02245 | 1.091288
+  15 |   13 |   11 | 0.01824 | 1.028085
+  16 |   10 |    9 | 0.01638 | 1.015260
+```
