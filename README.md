@@ -1,20 +1,20 @@
-# High Frequency Atmospheric Distortion (HFAD) Fitter
-Solve for residuals to a photometric calibration. For example those caused by
-high frequency atmospheric distortion.
+# Coherent Residual Mapper
+Solve for spatially coherent residuals to a photometric calibration. For example
+those caused by high frequency atmospheric distortion.
 
 ## Authors:
 Leigh C. Smith,
 Sergey E. Koposov
 
 ```
-usage: hfad_fitter.py [-h] [-s {MAD,STD,Qn}] [-f] [-v] [--overwrite]
-                      ref_file_path out_file_path
+usage: cr_mapper.py [-h] [-s {MAD,STD,Qn}] [-f] [-v] [--overwrite]
+                    ref_file_path out_file_path
 
 Solve for spatially coherent residuals global calibration.
 
 positional arguments:
   ref_file_path         Path to hdf5 archive of reference sources
-  out_file_path         Path to hfad solution output
+  out_file_path         Path to solution output
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -29,7 +29,7 @@ optional arguments:
 ## Example usage
 
 ```
-python hfad_fitter.py v20120320_00503_st_refs.hdf5 test.hdf5 -fv --overwrite
+python cr_mapper.py v20120320_00503_st_refs.hdf5 test.hdf5 -fv --overwrite
 ```
 
 ### The problem
@@ -42,7 +42,7 @@ Clearly there is a lot of spatially coherent structure present in this image. We
 
 ### The solution
 
-hfad_fitter.py maps the structure of the spatially coherent residuals for each detector by fitting Chebyshev polynomials of increasing degrees until the fractional improvement of sqrt(chisq) drops below 1%. Residuals are measured using 5-fold cross validation for robustness.
+cr_mapper.py maps the structure of the spatially coherent residuals for each detector by fitting Chebyshev polynomials of increasing degrees until the fractional improvement of sqrt(chisq) drops below 1%. Residuals are measured using 5-fold cross validation for robustness.
 
 Verbose output for ideal Chebyshev polynomial degree finding
 ```

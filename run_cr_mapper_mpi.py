@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 
 import argparse
-from hfad_fitter import run as hfad_fit
+from cr_mapper import run as cr_map
 from mpi4py import MPI, futures
 
 
 def cmdargs():
     parser = argparse.ArgumentParser(
-        description="Fit high frequency atmospheric distortion (hfad)")
+        description="Fit for a spatially coherent residual map")
     parser.add_argument("in_file_list_path", type=str, default=None,
                         help="Path to list of input file paths")
     parser.add_argument("out_file_list_path", type=str, default=None,
@@ -21,7 +21,7 @@ rank = comm.Get_rank()
 
 def run(in_file_path, out_file_path):
     try:
-        res = hfad_fit(file_path, out_file_path)
+        res = cr_map(file_path, out_file_path)
     except:
         res = False
     return res

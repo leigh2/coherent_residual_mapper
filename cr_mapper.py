@@ -15,7 +15,7 @@ def cmdargs():
     parser.add_argument("ref_file_path", type=str,
         help="Path to hdf5 archive of reference sources")
     parser.add_argument("out_file_path", type=str,
-        help="Path to hfad solution output")
+        help="Path to solution output")
     parser.add_argument("-s", "--spread", choices=["MAD", "STD", "Qn"],
         default="MAD",
         help="The spread measure to use for error estimation (default MAD)")
@@ -65,12 +65,6 @@ def read_data(infile):
 # the main code block
 def run(infile, outfile,
         figs=False, verbose=False, overwrite=False, spread='MAD'):
-
-    # check for the kill file, if exists return
-    # it's occasionally useful to be able to kill this script off gracefully,
-    # e.g. if in the middle of a big run of many files over multiple nodes
-    if isfile("kill_hfad_fitter"):
-        return False
 
 
     if figs:
