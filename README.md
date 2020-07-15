@@ -34,7 +34,7 @@ python hfad_fitter.py v20120320_00503_st_refs.hdf5 test.hdf5 -fv --overwrite
 
 ### The problem
 
-v20120320_00503_st_refs.hdf5 is an HDF5 archive containing instantaneous and average magnitudes (m and <m> respectively hereafter) of a number of well measured reference stars for the VIRCAM observation v20120320_00503_st. A map of median m-<m> inside spatial bins of each of the 16 VIRCAM detectors is shown below.
+v20120320_00503_st_refs.hdf5 is an HDF5 archive containing instantaneous and average magnitudes of a number of well measured reference stars for the VIRCAM observation v20120320_00503_st. A map of median residual (i.e. instantaneous minus average magnitude) inside spatial bins of each of the 16 VIRCAM detectors is shown below.
 
 ![Original residual map](/figs/original.png)
 
