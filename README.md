@@ -32,6 +32,54 @@ optional arguments:
 python hfad_fitter.py v20120320_00503_st_refs.hdf5 test.hdf5 -fv --overwrite
 ```
 
+### The problem
+
 v20120320_00503_st_refs.hdf5 is an HDF5 archive containing instantaneous and average magnitudes (m and <m> respectively hereafter) of a number of well measured reference stars for the VIRCAM observation v20120320_00503_st. A map of median m-<m> inside spatial bins of each of the 16 VIRCAM detectors is shown below.
+
 ![Original residual map](/figs/original.png)
-test  
+
+Clearly there is a lot of coherent spatial structure present in this image. We can reduce the scatter in the observations of individual stars if we can remove this structure.
+
+### The solution
+
+hfad_fitter.py maps the structure of the spatially coherent residuals for each detector by fitting Chebyshev polynomials of increasing degrees until the fractional improvement of sqrt(chisq) drops below 1%. Residuals are measured using 5-fold cross validation for robustness.
+
+Verbose output for ideal Chebyshev polynomial degree finding
+```
+Finding best ndeg
+     |  ndeg  Δ√<(residual/error)²>
+chip |     3   |     5   |     7   |    10   |    13   |    17   |    21   |    25  
+-----|---------|---------|---------|---------|---------|---------|---------|---------
+   1 |     inf |  0.0045 |  0.0006 |⇒ 0.0040⇐|         |         |         |         
+   2 |     inf |  0.0054 |  0.0086 |⇒ 0.0066⇐|         |         |         |         
+   3 |     inf |  0.0174 |  0.0130 |⇒ 0.0046⇐|         |         |         |         
+   4 |     inf |  0.0217 |  0.0078 |⇒ 0.0050⇐|         |         |         |         
+   5 |     inf |  0.0190 |  0.0084 |  0.0107 |⇒ 0.0078⇐|         |         |         
+   6 |     inf |  0.0129 |  0.0288 |  0.0114 |⇒ 0.0095⇐|         |         |         
+   7 |     inf |  0.0223 |  0.0241 |⇒ 0.0096⇐|         |         |         |         
+   8 |     inf |  0.0090 |  0.0055 |⇒ 0.0058⇐|         |         |         |         
+   9 |     inf |  0.0251 |  0.0128 |  0.0184 |⇒ 0.0054⇐|         |         |         
+  10 |     inf |  0.0076 |  0.0032 |  0.0105 |⇒ 0.0013⇐|         |         |         
+  11 |     inf |  0.0236 |  0.0363 |  0.0285 |  0.0151 |⇒ 0.0034⇐|         |         
+  12 |     inf |  0.0169 |  0.0075 |⇒ 0.0067⇐|         |         |         |         
+  13 |     inf |  0.0176 |  0.0043 |⇒ 0.0087⇐|         |         |         |         
+  14 |     inf |  0.0251 |  0.0065 |⇒ 0.0057⇐|         |         |         |         
+  15 |     inf |  0.0141 |  0.0104 |  0.0146 |⇒ 0.0080⇐|         |         |         
+  16 |     inf |  0.0240 |  0.0127 |⇒ 0.0069⇐|         |         |         |         
+```
+
+And in figure form:
+
+![Err vs. ndeg](/figs/error_vs_ndeg.png)
+
+Once the ideal number of Chebyshev polynomial degrees is identified (i.e. high enough to capture as much structure as possible but without overfitting the data or being too expensive to compute) it is refit to the all the data. The fitted model is shown in the below figure.
+
+![Model](/figs/model.png)
+
+Once this model is subtracted from the data we obtain the new residual maps shown below -- a significant improvement.
+
+![New residual map](/figs/residuals.png)
+
+An additional step is taken to calibrate the raw magnitude errors by fitting for a raw magnitude error scaling factor and a calibration error added in quadrature such that the distribution of the new residuals over their calibrated errors is approximately unit Gaussian in a series of magnitude bins. In the figure below the raw magnitude errors are the blue points, the calibrated magnitude errors are in orange. Generally this calibration results in an increase to the final magnitude error since the raw errors tend to be underestimated.
+
+![Original vs. calibrated errors](/figs/old_new_errs.png)
